@@ -4,8 +4,8 @@ var async = require('async');
 
 module.exports = function(app) {
   // data sources
-  var mongoDs = app.dataSources.mongoDs; // 'name' of your mongo connector, you can find it in datasource.json
-  var mysqlDs = app.dataSources.mysqlDs;
+  var mongoDs = app.dataSources.mongoDs; // 'name' of your mongo connector, you can find it in datasources.json
+  var mysqlDs = app.dataSources.mysqlDs; // 'name' of your mysql connector, you can find it in datasources.json
 
   // create all models
   async.parallel({
@@ -19,7 +19,7 @@ module.exports = function(app) {
     });
   });
 
-  // create reviewers
+  // Creates the Reviewer data structure in MongoDB using auto-migration and adds data to it.
   function createReviewers(cb) {
     mongoDs.automigrate('Reviewer', function(err) {
       if (err) return cb(err);
@@ -39,7 +39,7 @@ module.exports = function(app) {
     });
   }
 
-  // create coffee shops
+  // Creates a MySQL table for the CoffeeShop model and adds data to the table.
   function createCoffeeShops(cb) {
     mysqlDs.automigrate('CoffeeShop', function(err) {
       if (err) return cb(err);
@@ -59,7 +59,7 @@ module.exports = function(app) {
     });
   }
 
-  // create reviews
+  // Creates the Reviews data structure in MongoDB using auto-migration and adds data to it.
   function createReviews(reviewers, coffeeShops, cb) {
     mongoDs.automigrate('Review', function(err) {
       if (err) return cb(err);
