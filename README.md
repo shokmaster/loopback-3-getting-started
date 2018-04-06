@@ -9,3 +9,8 @@ Tutorials with some fixes:
 # Getting started Part II
 * Tutorial: [http://loopback.io/doc/en/lb3/Getting-started-part-II.html](http://loopback.io/doc/en/lb3/Getting-started-part-II.html)
 * Branch: [part-2](https://github.com/shokmaster/loopback-3-getting-started/tree/part-2)
+
+---
+
+# Log-in from Ember App
+* Branch: [jsonapi](https://github.com/shokmaster/loopback-3-getting-started/tree/jsonapi)
