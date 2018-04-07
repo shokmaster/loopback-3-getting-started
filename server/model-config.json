@@ -14,10 +14,10 @@
     ]
   },
   "User": {
-    "dataSource": "db"
+    "dataSource": "mysqlDs"
   },
   "AccessToken": {
-    "dataSource": "db",
+    "dataSource": "mysqlDs",
     "public": false
   },
   "ACL": {
@@ -25,14 +25,14 @@
     "public": false
   },
   "RoleMapping": {
-    "dataSource": "db",
+    "dataSource": "mysqlDs",
     "public": false,
     "options": {
       "strictObjectIDCoercion": true
     }
   },
   "Role": {
-    "dataSource": "db",
+    "dataSource": "mysqlDs",
     "public": false
   },
   "Message": {
@@ -43,11 +43,19 @@
     "public": true
   },
   "Review": {
-    "dataSource": "mongoDs",
+    "dataSource": "mysqlDs",
     "public": true
   },
   "Reviewer": {
-    "dataSource": "mongoDs",
+    "dataSource": "mysqlDs",
+    "public": true
+  },
+  "Product": {
+    "dataSource": "mysqlDs",
+    "public": true
+  },
+  "UserProduct": {
+    "dataSource": "mysqlDs",
     "public": true
   }
 }

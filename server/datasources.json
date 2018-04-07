@@ -12,15 +12,5 @@
     "name": "mysqlDs",
     "user": "shokmaster",
     "connector": "mysql"
-  },
-  "mongoDs": {
-    "host": "demo.strongloop.com",
-    "port": 27017,
-    "url": "",
-    "database": "getting_started_intermediate",
-    "password": "L00pBack",
-    "name": "mongoDs",
-    "user": "demo",
-    "connector": "mongodb"
   }
 }
