@@ -1,19 +1,21 @@
+{{#if errorMessage}}
+    <p>{{errorMessage}}</p>
+{{/if}}
+
 <h2>Login</h2>
 
 <form {{action 'authenticate' on='submit'}}>
-  <p>
-    <label for="identification">Email</label>
-    {{input id='identification' placeholder='Enter your email' value=identification}}
-  </p>
+    <p>Log in your account</p>
 
-  <p>
-    <label for="password">Password</label>
-    {{input id='password' placeholder='Enter your password' value=password type="password"}}
-  </p>
+    <p>
+        <label for="identification">Email</label>
+        {{input id='identification' type='email' placeholder='Enter your email' value=identification}}
+    </p>
 
-  <button type="submit">Login</button>
+    <p>
+        <label for="password">Password</label>
+        {{input id='password' type="password" placeholder='Enter your password' value=password}}
+    </p>
 
-  {{#if errorMessage}}
-    <p>{{errorMessage}}</p>
-  {{/if}}
+    <button type="submit">Login</button>
 </form>

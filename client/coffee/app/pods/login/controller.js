@@ -9,8 +9,12 @@ export default Controller.extend({
 
     authenticate() {
       const { identification, password } = this.getProperties('identification', 'password');
+      const authenticator = 'authenticator:application';
 
-      this.get('session').authenticate('authenticator:application', identification, password).catch((reason) => {
+      this.get('session').authenticate(authenticator, identification, password).then(() => {
+        debug('You are logged in. Redirecting to index...');
+        this.transitionToRoute('index');
+      }).catch((reason) => {
         this.set('errorMessage', (reason.error && reason.error.message) || reason);
       });
     }
