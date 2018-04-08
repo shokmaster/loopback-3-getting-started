@@ -13,6 +13,7 @@ Router.map(function() {
   // Authenticated
   this.route('user');
   this.route('users');
+  this.route('products');
 });
 
 export default Router;

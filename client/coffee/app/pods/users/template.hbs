@@ -1,8 +1,8 @@
 {{#each model as |user|}}
   <p>
-    ID: {{model.id}}<br>
-    Username: {{model.username}}<br>
-    Email: {{model.email}}<br>
+    ID: {{user.id}}<br>
+    Username: {{user.username}}<br>
+    Email: {{user.email}}<br>
     <img src="{{if user.avatar user.avatar defaultAvatar}}" />
   </p>
 {{/each}}
