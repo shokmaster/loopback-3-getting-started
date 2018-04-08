@@ -5,10 +5,10 @@
   "properties": {},
   "validations": [],
   "relations": {
-    "userProducts": {
+    "orders": {
       "type": "hasMany",
-      "model": "UserProduct",
-      "foreignKey": ""
+      "model": "Order",
+      "foreignKey": "userId"
     }
   },
   "acls": [

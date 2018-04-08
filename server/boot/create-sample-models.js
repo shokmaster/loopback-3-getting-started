@@ -2,7 +2,8 @@
 
 // DOC: https://loopback.io/doc/en/lb3/Creating-a-default-admin-user.html
 
-var async = require('async');
+const {log} = console;
+const async = require('async');
 
 module.exports = function(app) {
   const models = app.models;
@@ -10,55 +11,46 @@ module.exports = function(app) {
   logModels(models);
 
   // data sources
-  var mysqlDs = app.dataSources.mysqlDs; // 'name' of your mysql connector, you can find it in datasources.json
+  const mysqlDs = app.dataSources.mysqlDs; // 'name' of your mysql connector, you can find it in datasources.json
 
+  // https://github.com/strongloop/loopback/issues/2073
   mysqlDs.automigrate(['RoleMapping', 'AccessToken'], function(err) {
     if (err) throw err;
   });
 
   // create all models
   async.parallel({
-    reviewers: async.apply(createReviewers),
     coffeeShops: async.apply(createCoffeeShops),
+    products: async.apply(createProducts),
+    reviewers: async.apply(createReviewers),
     users: async.apply(createUsers),
   }, function(err, results) {
     if (err) throw err;
 
-    createReviews(results.reviewers, results.coffeeShops, function(err) {
+    log(`Created ${results.coffeeShops.length} coffeeShops`);
+    log(`Created ${results.products.length} products`);
+    log(`Created ${results.reviewers.length} reviewers`);
+
+    log(`Created ${results.users.length} users:`, results.users.map((user) => user.email).join(', '));
+
+    createReviews(results.reviewers, results.coffeeShops, function(err, reviews) {
       if (err) throw err;
 
-      console.log('> models created sucessfully');
+      log(`Created ${reviews.length} reviews`);
     });
 
-    // [WIP] Create products, assign product owners
-    /*createProducts(results.users, function(err, products) {
+    // Create products, assign product owners (orders)
+    createOrders(results.users, results.products, function(err, orders) {
       if (err) throw err;
 
-      console.log('Created products:', products);
-      console.log('Pendiente crear UserProducts');
-
-      mysqlDs.automigrate('UserProduct', function(err) {
-        if (err) throw err;
-
-        const UserProduct = models.UserProduct;
-
-        UserProduct.create({
-          userId: 0,
-          productId: products[0].id,
-          code: '123abc',
-        });
-        //results.users[0].userProducts.create({
-        //  productId: products[0].id,
-        //  code: '123abc',
-        //});
-      });
-    });*/
+      log(`Created ${orders.length} orders:`, orders.map((order) => order.code).join(', '));
+    });
 
     // Create the admin role
     createRoleAdmin(results.users, function(err, role) {
       if (err) throw err;
 
-      console.log('Created role:', role);
+      log('Created 1 role:', role.name);
 
       const RoleMapping = models.RoleMapping;
 
@@ -69,33 +61,61 @@ module.exports = function(app) {
       }, function(err, principal) {
         if (err) throw err;
 
-        console.log('Created principal:', principal);
+        log('Created 1 principal:', principal);
+
+        log('> models created sucessfully');
       });
     });
   });
 
-  function createProducts(users, cb) {
+  function createOrders(users, products, cb) {
+    mysqlDs.automigrate('Order', function(err) {
+      if (err) return cb(err);
+
+      const Order = models.Order;
+
+      Order.create([{
+        userId: users[0].id,
+        productId: products[2].id,
+        code: '123abc',
+        purchaseDate: daysAgo(4),
+      }, {
+        userId: users[1].id,
+        productId: products[1].id,
+        code: '234bcd',
+        purchaseDate: daysAgo(3),
+      }, {
+        userId: users[2].id,
+        productId: products[0].id,
+        code: '345cde',
+        purchaseDate: daysAgo(2),
+      }], cb);
+    });
+  }
+
+  function createProducts(cb) {
     mysqlDs.automigrate('Product', function(err) {
       if (err) return cb(err);
 
       const Product = models.Product;
 
       Product.create([{
-        name: 'Panda Starter Kit',
+        name: 'Panda Painter Kit',
         reference: '0000',
       }, {
-        name: 'Papagallo Starter Kit',
+        name: 'Panda Robot Kit',
         reference: '0001',
       }, {
-        name: 'Urraca Starter Kit',
-        reference: '0002',
+        name: 'Little Explorer Kit',
+        reference: '0003',
+      }, {
+        name: 'Little Engineer Kit',
+        reference: '0004',
       }], cb);
     });
   };
 
   function createRoleAdmin(users, cb) {
-    console.log('Created users:', users);
-
     mysqlDs.automigrate('Role', function(err) {
       if (err) return cb(err);
 
@@ -176,28 +196,27 @@ module.exports = function(app) {
       if (err) return cb(err);
 
       var Review = models.Review;
-      var DAY_IN_MILLISECONDS = 1000 * 60 * 60 * 24;
 
       Review.create([{
-        date: Date.now() - (DAY_IN_MILLISECONDS * 4),
+        date: daysAgo(4),
         rating: 5,
         comments: 'A very good coffee shop.',
         publisherId: reviewers[0].id,
         coffeeShopId: coffeeShops[0].id,
       }, {
-        date: Date.now() - (DAY_IN_MILLISECONDS * 3),
+        date: daysAgo(3),
         rating: 5,
         comments: 'Quite pleasant.',
         publisherId: reviewers[1].id,
         coffeeShopId: coffeeShops[0].id,
       }, {
-        date: Date.now() - (DAY_IN_MILLISECONDS * 2),
+        date: daysAgo(2),
         rating: 4,
         comments: 'It was ok.',
         publisherId: reviewers[1].id,
         coffeeShopId: coffeeShops[1].id,
       }, {
-        date: Date.now() - (DAY_IN_MILLISECONDS),
+        date: daysAgo(1),
         rating: 4,
         comments: 'I go here everyday.',
         publisherId: reviewers[2].id,
@@ -210,6 +229,13 @@ module.exports = function(app) {
 const logModels = (models) => {
   const modelsNames = Object.keys(models);
 
-  console.log(`Found ${modelsNames.length} models:`);
-  modelsNames.forEach((name) => console.log(`  - ${name}`));
+  log(`Found ${modelsNames.length} models:`);
+
+  modelsNames.forEach((name) => log(`  - ${name}`));
+};
+
+const daysAgo = (days) => {
+  const DAY_IN_MILLISECONDS = 1000 * 60 * 60 * 24;
+
+  return Date.now() - DAY_IN_MILLISECONDS * days;
 };

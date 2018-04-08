@@ -1,5 +1,5 @@
 {
-  "name": "UserProduct",
+  "name": "Order",
   "description": "Product purchased by a user, with a unique code.",
   "base": "PersistedModel",
   "idInjection": true,
@@ -19,8 +19,16 @@
   "relations": {
     "user": {
       "type": "belongsTo",
-      "model": "user",
+      "model": "User",
       "foreignKey": "userId",
+      "options": {
+        "nestRemoting": true
+      }
+    },
+    "product": {
+      "type": "belongsTo",
+      "model": "Product",
+      "foreignKey": "productId",
       "options": {
         "nestRemoting": true
       }

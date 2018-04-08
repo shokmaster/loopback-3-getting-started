@@ -35,9 +35,6 @@
     "dataSource": "mysqlDs",
     "public": false
   },
-  "Message": {
-    "dataSource": null
-  },
   "CoffeeShop": {
     "dataSource": "mysqlDs",
     "public": true
@@ -54,7 +51,7 @@
     "dataSource": "mysqlDs",
     "public": true
   },
-  "UserProduct": {
+  "Order": {
     "dataSource": "mysqlDs",
     "public": true
   }
