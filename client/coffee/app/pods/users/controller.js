@@ -3,6 +3,6 @@ import { defaultAvatar } from '../../constants';
 
 export default Controller.extend({
 
-  defaultAvatar
+	defaultAvatar
 
 });

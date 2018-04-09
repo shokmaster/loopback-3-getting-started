@@ -7,22 +7,22 @@ import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mi
  */
 export default Route.extend(ApplicationRouteMixin, {
 
-  currentUser: inject(),
+	currentUser: inject(),
 
-  beforeModel() {
-    return this._loadCurrentUser();
-  },
+	beforeModel() {
+		return this._loadCurrentUser();
+	},
 
-  sessionAuthenticated() {
-    this._super(...arguments);
+	sessionAuthenticated() {
+		this._super(...arguments);
 
-    this._loadCurrentUser();
-  },
+		this._loadCurrentUser();
+	},
 
-  _loadCurrentUser() {
-    return this.get('currentUser').load().catch(() =>
-      this.get('session').invalidate()
-    );
-  }
+	_loadCurrentUser() {
+		return this.get('currentUser').load().catch(() =>
+			this.get('session').invalidate()
+		);
+	}
 
 });

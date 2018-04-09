@@ -7,21 +7,21 @@ import { resolve } from 'rsvp';
  */
 export default Service.extend({
 
-  session: inject('session'),
+	session: inject('session'),
 
-  store: inject(),
+	store: inject(),
 
-  load() {
-    // The response of /login service contains the 'user_id' key
-    let userId = this.get('session.data.authenticated.userId');
+	load() {
+		// The response of /login service contains the 'user_id' key
+		let userId = this.get('session.data.authenticated.userId');
 
-    if (!isEmpty(userId)) {
-      return this.get('store').findRecord('user', userId).then((user) => {
-        this.set('user', user);
-      });
-    }
+		if (!isEmpty(userId)) {
+			return this.get('store').findRecord('user', userId).then((user) => {
+				this.set('user', user);
+			});
+		}
 
-    return resolve();
-  }
+		return resolve();
+	}
 
 });

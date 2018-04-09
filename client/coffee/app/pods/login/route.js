@@ -3,12 +3,12 @@ import UnauthenticatedRouteMixin from 'ember-simple-auth/mixins/unauthenticated-
 
 export default Route.extend(UnauthenticatedRouteMixin, {
 
-  // routeIfAlreadyAuthenticated: 'index', // default: index
+	// routeIfAlreadyAuthenticated: 'index', // default: index
 
-  resetController(controller, isExiting) {
-    if (isExiting) {
-      controller.set('errorMessage', '');
-    }
-  }
+	resetController(controller, isExiting) {
+		if (isExiting) {
+			controller.set('errorMessage', '');
+		}
+	}
 
 });

@@ -3,6 +3,6 @@ import { inject } from '@ember/service';
 
 export default Controller.extend({
 
-  session: inject()
+	session: inject()
 
 });
