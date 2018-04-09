@@ -1,14 +1,22 @@
 {
-  "name": "user",
+  "name": "Customer",
   "base": "User",
-  "idInjection": true,
-  "properties": {},
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "avatar": {
+      "type": "string",
+      "required": false
+    }
+  },
   "validations": [],
   "relations": {
     "orders": {
       "type": "hasMany",
       "model": "Order",
-      "foreignKey": "userId"
+      "foreignKey": "customerId"
     }
   },
   "acls": [
@@ -21,7 +29,7 @@
     {
       "accessType": "*",
       "principalType": "ROLE",
-      "principalId": "$admin",
+      "principalId": "admin",
       "permission": "ALLOW"
     }
   ],

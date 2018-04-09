@@ -1,6 +1,6 @@
 {
   "name": "Order",
-  "description": "Product purchased by a user, with a unique code.",
+  "description": "Product purchased by a customer, with a unique code.",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
@@ -17,10 +17,10 @@
   },
   "validations": [],
   "relations": {
-    "user": {
+    "customer": {
       "type": "belongsTo",
-      "model": "User",
-      "foreignKey": "userId",
+      "model": "Customer",
+      "foreignKey": "customerId",
       "options": {
         "nestRemoting": true
       }
@@ -34,6 +34,19 @@
       }
     }
   },
-  "acls": [],
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    },
+    {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW"
+    }
+  ],
   "methods": {}
 }

@@ -8,8 +8,6 @@ const async = require('async');
 module.exports = function(app) {
 	const models = app.models;
 
-	logModels(models);
-
 	// data sources
 	const mysqlDs = app.dataSources.mysqlDs; // 'name' of your mysql connector, you can find it in datasources.json
 
@@ -23,7 +21,7 @@ module.exports = function(app) {
 		coffeeShops: async.apply(createCoffeeShops),
 		products: async.apply(createProducts),
 		reviewers: async.apply(createReviewers),
-		users: async.apply(createUsers),
+		customers: async.apply(createCustomers),
 	}, function(err, results) {
 		if (err) throw err;
 
@@ -31,7 +29,7 @@ module.exports = function(app) {
 		log(`Created ${results.products.length} products`);
 		log(`Created ${results.reviewers.length} reviewers`);
 
-		log(`Created ${results.users.length} users:`, results.users.map((user) => user.email).join(', '));
+		log(`Created ${results.customers.length} customers:`, results.customers.map((customer) => customer.email).join(', '));
 
 		createReviews(results.reviewers, results.coffeeShops, function(err, reviews) {
 			if (err) throw err;
@@ -40,14 +38,14 @@ module.exports = function(app) {
 		});
 
 		// Create products, assign product owners (orders)
-		createOrders(results.users, results.products, function(err, orders) {
+		createOrders(results.customers, results.products, function(err, orders) {
 			if (err) throw err;
 
 			log(`Created ${orders.length} orders:`, orders.map((order) => order.code).join(', '));
 		});
 
 		// Create the admin role
-		createRoleAdmin(results.users, function(err, role) {
+		createRoleAdmin(results.customers, function(err, role) {
 			if (err) throw err;
 
 			log('Created 1 role:', role.name);
@@ -57,7 +55,7 @@ module.exports = function(app) {
 			// Make Juanan an admin
 			role.principals.create({
 				principalType: RoleMapping.USER,
-				principalId: results.users[0].id,
+				principalId: results.customers[0].id,
 			}, function(err, principal) {
 				if (err) throw err;
 
@@ -68,24 +66,24 @@ module.exports = function(app) {
 		});
 	});
 
-	function createOrders(users, products, cb) {
+	function createOrders(customers, products, cb) {
 		mysqlDs.automigrate('Order', function(err) {
 			if (err) return cb(err);
 
 			const Order = models.Order;
 
 			Order.create([{
-				userId: users[0].id,
+				customerId: customers[0].id,
 				productId: products[2].id,
 				code: '123abc',
 				purchaseDate: daysAgo(4),
 			}, {
-				userId: users[1].id,
+				customerId: customers[1].id,
 				productId: products[1].id,
 				code: '234bcd',
 				purchaseDate: daysAgo(3),
 			}, {
-				userId: users[2].id,
+				customerId: customers[2].id,
 				productId: products[0].id,
 				code: '345cde',
 				purchaseDate: daysAgo(2),
@@ -115,7 +113,7 @@ module.exports = function(app) {
 		});
 	}
 
-	function createRoleAdmin(users, cb) {
+	function createRoleAdmin(customers, cb) {
 		mysqlDs.automigrate('Role', function(err) {
 			if (err) return cb(err);
 
@@ -128,24 +126,27 @@ module.exports = function(app) {
 		});
 	}
 
-	function createUsers(cb) {
-		mysqlDs.automigrate('User', function(err) {
+	function createCustomers(cb) {
+		mysqlDs.automigrate('Customer', function(err) {
 			if (err) return cb(err);
 
-			const User = models.User;
+			const Customer = models.Customer;
 
-			User.create([{
-				username: 'Juanan',
-				email: 'shokmaster@gmail.com',
+			Customer.create([{
+				username: 'Admin',
+				email: 'foo@bar.com',
 				password: '12345678',
+				avatar: 'https://randomuser.me/api/portraits/men/1.jpg'
 			}, {
 				username: 'Jane',
 				email: 'jane@doe.com',
 				password: '12345678',
+				avatar: 'https://randomuser.me/api/portraits/women/4.jpg'
 			}, {
 				username: 'Bob',
 				email: 'bob@projects.com',
 				password: '12345678',
+				avatar: 'https://randomuser.me/api/portraits/men/60.jpg'
 			}], cb);
 		});
 	}
@@ -224,14 +225,6 @@ module.exports = function(app) {
 			}], cb);
 		});
 	}
-};
-
-const logModels = (models) => {
-	const modelsNames = Object.keys(models);
-
-	log(`Found ${modelsNames.length} models:`);
-
-	modelsNames.forEach((name) => log(`  - ${name}`));
 };
 
 const daysAgo = (days) => {

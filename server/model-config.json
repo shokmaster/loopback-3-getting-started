@@ -16,6 +16,9 @@
   "User": {
     "dataSource": "mysqlDs"
   },
+  "Customer": {
+    "dataSource": "mysqlDs"
+  },
   "AccessToken": {
     "dataSource": "mysqlDs",
     "public": false
