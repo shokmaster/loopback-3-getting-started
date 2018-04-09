@@ -14,3 +14,13 @@ Tutorials with some fixes:
 
 # Log-in from Ember App
 * Branch: [jsonapi](https://github.com/shokmaster/loopback-3-getting-started/tree/jsonapi)
+
+# Customers, Products and Orders
+* Branch: [products](https://github.com/shokmaster/loopback-3-getting-started/tree/products)
+
+  - Replace User model with Customer model
+  - Create models for Product and Order
+  - New settings for EditorConfig and ESLint
+  - Show user avatar
+  - Fixed admin role
+  - Improve migrations script
