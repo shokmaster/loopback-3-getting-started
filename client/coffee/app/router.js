@@ -11,8 +11,8 @@ Router.map(function() {
 	this.route('protected');
 
 	// Authenticated
-	this.route('user');
-	this.route('users');
+	this.route('customer');
+	this.route('customers');
 	this.route('products');
 });
 

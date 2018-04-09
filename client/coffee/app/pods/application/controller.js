@@ -1,12 +1,22 @@
 import Controller from '@ember/controller';
 import { inject } from '@ember/service';
 import config from '../../config/environment';
+import { defaultAvatar } from '../../constants';
+import { computed } from '@ember/object';
 
 export default Controller.extend({
 
+	host: config.API.host,
+
 	session: inject(),
 
-	apiBaseUrl: config.apiBaseUrl,
+	currentUser: inject(),
+
+	avatar: computed('currentUser.customer.avatar', function() {
+		const avatar = this.get('currentUser.customer.avatar');
+
+		return avatar || defaultAvatar;
+	}),
 
 	actions: {
 		invalidateSession() {

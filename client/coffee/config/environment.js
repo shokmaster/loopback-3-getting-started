@@ -23,7 +23,11 @@ module.exports = function(environment) {
 			// when it is created
 		},
 
-		apiBaseUrl: 'http://localhost:3000'
+		API: {
+			host: 'http://localhost:3000',
+			namespace: 'api',
+			loginEndpoint: 'http://localhost:3000/api/customers/login'
+		}
 	};
 
 	if (environment === 'development') {

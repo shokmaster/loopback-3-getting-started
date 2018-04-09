@@ -10,4 +10,6 @@ export default DS.Model.extend({
 
 	password2: DS.attr('string'),
 
+	avatar: DS.attr('string'),
+
 });

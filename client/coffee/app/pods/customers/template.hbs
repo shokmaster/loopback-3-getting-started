@@ -1,0 +1,8 @@
+{{#each model as |customer|}}
+	<p>
+		ID: {{customer.id}}<br>
+		Username: {{customer.username}}<br>
+		Email: {{customer.email}}<br>
+		<img src="{{if customer.avatar customer.avatar defaultAvatar}}" />
+	</p>
+{{/each}}

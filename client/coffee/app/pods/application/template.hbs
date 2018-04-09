@@ -6,9 +6,11 @@
 			<li>{{#link-to 'index'}}Home{{/link-to}}</li>
 			{{#if session.isAuthenticated}}
 				<li>{{link-to 'Products' 'products'}}</li>
-				<li>{{link-to 'User' 'user'}}</li>
-				<li>{{link-to 'Users' 'users'}}</li>
-				<li><a {{action 'invalidateSession'}}>Logout</a></li>
+				<li>{{link-to 'Customers' 'customers'}}</li>
+				<li class="right avatar">
+					{{#link-to 'customer'}}<img src="{{avatar}}" />{{/link-to}}
+				</li>
+				<li class="right"><a {{action 'invalidateSession'}}>Logout</a></li>
 			{{else}}
 				<li>{{link-to 'Login' 'login'}}</li>
 				{{!--<li>{{link-to 'Register' 'register'}}</li>--}}
@@ -25,7 +27,7 @@
 		<div class="center">
 			<hr>
 			<div class="links">
-				<a href="{{apiBaseUrl}}/explorer">Explore the API</a>
+				<a href="{{host}}/explorer">Explore the API</a>
 				<a href="https://github.com/shokmaster/loopback-3-getting-started/">GitHub</a>
 				<p>&copy; 2018 John Doe.</p>
 			</div>

@@ -13,11 +13,11 @@ export default Service.extend({
 
 	load() {
 		// The response of /login service contains the 'user_id' key
-		let userId = this.get('session.data.authenticated.userId');
+		let userId = this.get('session.data.authenticated.userId'); // 'userId' comes from backend
 
 		if (!isEmpty(userId)) {
-			return this.get('store').findRecord('user', userId).then((user) => {
-				this.set('user', user);
+			return this.get('store').findRecord('customer', userId).then((customer) => {
+				this.set('customer', customer);
 			});
 		}
 
