@@ -1,11 +1,11 @@
-# loopback-3-getting-started-part-2
+# Customers, Products and Orders
 
 Tutorial [http://loopback.io/doc/en/lb3/Introducing-the-Coffee-Shop-Reviews-app.html](http://loopback.io/doc/en/lb3/Introducing-the-Coffee-Shop-Reviews-app.html) with some fixes
 
 ## Installation
 
 * `git clone https://github.com/shokmaster/loopback-3-getting-started.git` this repository
-* `git checkout part-2` this branch
+* `git checkout products` this branch
 * `cd loopback-3-getting-started && npm install` Install LoopBack app dependencies
 * `cd client/coffee && npm install` Install Ember app dependencies
 
@@ -20,5 +20,9 @@ Tutorial [http://loopback.io/doc/en/lb3/Introducing-the-Coffee-Shop-Reviews-app.
 
 ## CHANGELOG:
 
-- Completed all the steps up to [Define a remote hook](http://loopback.io/doc/en/lb3/Define-a-remote-hook.html).
-- Added Ember app in `client/coffee/`.
+- Replace User model with Customer model
+- Create models for Product and Order
+- New settings for EditorConfig and ESLint
+- Show user avatar
+- Fixed admin role
+- Improve migrations script
